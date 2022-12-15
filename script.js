@@ -101,7 +101,7 @@ diff.onclick = function () {
   overlay.classList.remove("hidden");
 };
 
-again.onclick = reset();
+again.onclick = reset;
 
 submit.onclick = function () {
   if (!guess.value) {
