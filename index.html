@@ -9,6 +9,7 @@
   </head>
   <body>
     <header>
+      <button id="difficulty" class="btn diff">Change Difficulty</button>
       <h1>Guess The Number!</h1>
       <p class="between">(Between 1 and 50)</p>
       <button id="again" class="btn again">Again!</button>
@@ -21,11 +22,25 @@
       </section>
       <section class="right">
         <p class="message">Start guessing...</p>
+        <p class="label-diff">
+          🧠 Difficulty: <span class="txtDiff">Normal</span>
+        </p>
         <p class="label-score">💯 Score: <span class="score">20</span></p>
         <p class="label-highscore">
           🥇 Highscore: <span class="highscore">0</span>
         </p>
       </section>
+      <div class="modal hidden">
+        <button class="close-modal">&times;</button>
+        <h1>Select Difficulty</h1>
+        <div class="btncontainer">
+          <button class="btn ez">Easy</button>
+          <button class="btn nm currDiff">Normal</button>
+          <button class="btn hd">Hard</button>
+          <button class="btn in">Insane</button>
+        </div>
+      </div>
+      <div class="overlay hidden"></div>
     </main>
     <script src="script.js"></script>
   </body>
