@@ -36,6 +36,7 @@ function closeModal() {
   modal.classList.add("hidden");
   overlay.classList.add("hidden");
 }
+
 function removeCurrDiff() {
   ez.classList.remove("currDiff");
   nm.classList.remove("currDiff");
@@ -54,6 +55,51 @@ function reset() {
   numberToGuess = Math.floor(Math.random() * difficulty) + 1;
   console.log(numberToGuess);
   number.style.width = "15rem";
+}
+
+function check() {
+  if (!guess.value) {
+    displayMessage("❗ Please enter a number!");
+  } else if (
+    Number(score.textContent) === 1 &&
+    (Number(guess.value) < numberToGuess || Number(guess.value) > numberToGuess)
+  ) {
+    score.textContent = "0";
+    displayMessage("❌ Game over! Try again!");
+    submit.style.backgroundColor = "#444444";
+    submit.disabled = true;
+  } else {
+    if (Number(guess.value) != numberToGuess) {
+      score.textContent = Number(score.textContent) - 1;
+      displayMessage(
+        Number(guess.value) < numberToGuess
+          ? `📉 Too low! (${guess.value})`
+          : `📈 Too high! (${guess.value})`
+      );
+    } else {
+      document.body.style.backgroundColor = "#32a852";
+      displayMessage(`🎉 Correct guess! (${guess.value})`);
+      number.textContent = numberToGuess;
+      submit.style.backgroundColor = "#444444";
+      number.style.width = "300px";
+      submit.disabled = true;
+      if (Number(score.textContent) > Number(highscore.textContent)) {
+        if (difficulty === 20) {
+          ezHS = Number(score.textContent);
+          highscore.textContent = ezHS;
+        } else if (difficulty === 50) {
+          nmHS = Number(score.textContent);
+          highscore.textContent = nmHS;
+        } else if (difficulty === 100) {
+          hdHS = Number(score.textContent);
+          highscore.textContent = hdHS;
+        } else {
+          insHS = Number(score.textContent);
+          highscore.textContent = insHS;
+        }
+      }
+    }
+  }
 }
 
 ez.addEventListener("click", function () {
@@ -103,47 +149,15 @@ diff.onclick = function () {
 
 again.onclick = reset;
 
-submit.onclick = function () {
-  if (!guess.value) {
-    displayMessage("❗ Please enter a number!");
-  } else if (
-    Number(score.textContent) === 1 &&
-    (Number(guess.value) < numberToGuess || Number(guess.value) > numberToGuess)
-  ) {
-    score.textContent = "0";
-    displayMessage("❌ Game over! Try again!");
-    submit.style.backgroundColor = "#444444";
-    submit.disabled = true;
-  } else {
-    if (Number(guess.value) != numberToGuess) {
-      score.textContent = Number(score.textContent) - 1;
-      displayMessage(
-        Number(guess.value) < numberToGuess
-          ? `📉 Too low! (${guess.value})`
-          : `📈 Too high! (${guess.value})`
-      );
-    } else {
-      document.body.style.backgroundColor = "#32a852";
-      displayMessage(`🎉 Correct guess! (${guess.value})`);
-      number.textContent = numberToGuess;
-      submit.style.backgroundColor = "#444444";
-      number.style.width = "300px";
-      submit.disabled = true;
-      if (Number(score.textContent) > Number(highscore.textContent)) {
-        if (difficulty === 20) {
-          ezHS = Number(score.textContent);
-          highscore.textContent = ezHS;
-        } else if (difficulty === 50) {
-          nmHS = Number(score.textContent);
-          highscore.textContent = nmHS;
-        } else if (difficulty === 100) {
-          hdHS = Number(score.textContent);
-          highscore.textContent = hdHS;
-        } else {
-          insHS = Number(score.textContent);
-          highscore.textContent = insHS;
-        }
-      }
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    check();
+  }
+  if (e.key === "Escape") {
+    if (!modal.classList.contains("hidden")) {
+      closeModal();
     }
   }
-};
+});
+
+submit.onclick = check;
